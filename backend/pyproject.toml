@@ -1,0 +1,61 @@
+[project]
+name = "goodplan"
+version = "0.1.0"
+description = "API do GoodPlan, planejador de viagens e mudanças para fora do Brasil"
+requires-python = ">=3.12"
+dependencies = [
+    "alembic>=1.20.1",
+    "babel>=2.18.0",
+    "fastapi>=0.162.0",
+    "httpx2>=2.16.0",
+    "psycopg[binary]>=3.3.8",
+    "pydantic>=2.14.3",
+    "pydantic-settings>=2.16.2",
+    "sqlalchemy>=2.1.8",
+    "uvicorn[standard]>=0.54.0",
+]
+
+[project.scripts]
+goodplan = "goodplan.cli:main"
+
+[build-system]
+requires = ["uv_build>=0.13.6,<0.14.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "mypy>=2.4.1",
+    "pytest>=9.2.0",
+    "pytest-cov>=7.1.0",
+    "ruff>=0.17.4",
+]
+
+[tool.ruff]
+line-length = 110
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "S", "SIM", "RUF", "N", "C90", "PL"]
+# N818: as exceções do domínio têm nomes de situação (InvalidPayload, TooFewAirports), sem o sufixo Error.
+ignore = ["RUF001", "RUF002", "RUF003", "PLR0913", "N818"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "S104", "S105", "S106", "PLR2004"]
+"src/goodplan/migrations/versions/**" = ["E501"]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.mypy]
+strict = true
+plugins = ["pydantic.mypy"]
+exclude = ["src/goodplan/migrations/versions/"]
+
+[[tool.mypy.overrides]]
+module = ["tests.*"]
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
