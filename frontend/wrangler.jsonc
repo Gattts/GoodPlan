@@ -18,12 +18,24 @@
   },
   "kv_namespaces": [
     // TROQUE o id pelo que `npx wrangler kv namespace create RATES` mostrar.
-    { "binding": "RATES", "id": "00000000000000000000000000000000" },
+    {
+      "binding": "RATES",
+      "id": "a6f6d07858f8466aba1fe8a7e46eec8f",
+    },
   ],
   // Rotinas duas vezes por dia (12h e 20h UTC): câmbio sempre, aeroportos quando estiverem na hora.
-  "triggers": { "crons": ["0 12,20 * * *"] },
-  "observability": { "enabled": true },
+  "triggers": {
+    "crons": ["0 12,20 * * *"],
+  },
+  "observability": {
+    "enabled": true,
+  },
   // Endereço do app. O domínio está na mesma conta do Cloudflare, que cria o DNS e o certificado sozinho.
-  "routes": [{ "pattern": "goodplan.jpaulos.dev", "custom_domain": true }],
+  "routes": [
+    {
+      "pattern": "goodplan.jpaulos.dev",
+      "custom_domain": true,
+    },
+  ],
   "workers_dev": false,
 }
