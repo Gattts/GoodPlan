@@ -1,0 +1,120 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/big-shoulders-display';
+@import '@fontsource/barlow/400.css';
+@import '@fontsource/barlow/500.css';
+@import '@fontsource/barlow/600.css';
+@import '@fontsource/barlow/700.css';
+@import '@fontsource/dm-mono/400.css';
+@import '@fontsource/dm-mono/500.css';
+
+/* Tokens do protótipo "Planner de Viagem": sinalização de aeroporto. A placa amarela é igual nos dois temas. */
+:root {
+  --bg: #eef1f4;
+  --surface: #ffffff;
+  --ink: #14181f;
+  --muted: #566072;
+  --line: #d3dae3;
+  --field: #f6f8fa;
+  --link: #0b4fa8;
+  --sign: #ffc72c;
+  --sign-ink: #15171c;
+  --sign-line: rgba(21, 23, 28, 0.38);
+  --sign-soft: rgba(21, 23, 28, 0.74);
+  --ok: #0f6b47;
+  --ok-bg: #dcf3e7;
+  --warn: #7a4f06;
+  --warn-bg: #fdefc8;
+  --bad: #a32a2a;
+  --bad-bg: #fbe3e0;
+  --idle: #465163;
+  --idle-bg: #e6ebf1;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --bg: #101318;
+    --surface: #191d24;
+    --ink: #eef1f5;
+    --muted: #a2acbb;
+    --line: #2e3540;
+    --field: #12161c;
+    --link: #86b8ff;
+    --ok: #74d8a9;
+    --ok-bg: #123226;
+    --warn: #f0c667;
+    --warn-bg: #3a2c0c;
+    --bad: #ff9d94;
+    --bad-bg: #3f1a18;
+    --idle: #b6c0cf;
+    --idle-bg: #262c36;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme='dark'] {
+  --bg: #101318;
+  --surface: #191d24;
+  --ink: #eef1f5;
+  --muted: #a2acbb;
+  --line: #2e3540;
+  --field: #12161c;
+  --link: #86b8ff;
+  --ok: #74d8a9;
+  --ok-bg: #123226;
+  --warn: #f0c667;
+  --warn-bg: #3a2c0c;
+  --bad: #ff9d94;
+  --bad-bg: #3f1a18;
+  --idle: #b6c0cf;
+  --idle-bg: #262c36;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-field: var(--field);
+  --color-link: var(--link);
+  --color-sign: var(--sign);
+  --color-sign-ink: var(--sign-ink);
+  --color-sign-line: var(--sign-line);
+  --color-sign-soft: var(--sign-soft);
+  --color-ok: var(--ok);
+  --color-ok-bg: var(--ok-bg);
+  --color-warn: var(--warn);
+  --color-warn-bg: var(--warn-bg);
+  --color-bad: var(--bad);
+  --color-bad-bg: var(--bad-bg);
+  --color-idle: var(--idle);
+  --color-idle-bg: var(--idle-bg);
+  --font-display: 'Big Shoulders Display Variable', 'Arial Narrow', Impact, sans-serif;
+  --font-body: 'Barlow', 'Helvetica Neue', Arial, sans-serif;
+  --font-data: 'DM Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+}
+
+@layer base {
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 400 15.5px/1.5 var(--font-body);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--link);
+    outline-offset: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0s !important;
+    animation-duration: 0s !important;
+  }
+}
