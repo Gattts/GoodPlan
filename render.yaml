@@ -1,0 +1,35 @@
+# Blueprint do Render: cria a API a partir de backend/Dockerfile.
+# No painel do Render: New → Blueprint → escolha este repositório. Passo a passo no README, seção "Deploy".
+services:
+  - type: web
+    name: goodplan-api
+    runtime: docker
+    plan: free
+    # Mesma região do projeto no Supabase (us-east-1, Virgínia): cada consulta ao banco viaja menos.
+    # Se o plano gratuito não existir em virginia, use ohio, a região mais próxima. Não muda depois.
+    region: virginia
+    # Caminhos a partir da raiz do repositório.
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    # Só mudanças no backend geram um novo deploy.
+    buildFilter:
+      paths:
+        - backend/**
+    healthCheckPath: /api/health
+    envVars:
+      # Porta padrão do Render; a imagem escuta em $PORT.
+      - key: PORT
+        value: "10000"
+      # URI do Session pooler do Supabase. A conexão direta (db.<ref>.supabase.co) só tem IPv6, e o Render
+      # não acessa endereços IPv6.
+      - key: GP_DATABASE_URL
+        sync: false
+      # O mesmo valor vai para o Worker do Cloudflare: npx wrangler secret put PROXY_SECRET
+      - key: GP_PROXY_SECRET
+        sync: false
+      # O mesmo valor vai para o Worker do Cloudflare: npx wrangler secret put JOBS_TOKEN
+      - key: GP_JOBS_TOKEN
+        sync: false
+      # A API só atende quem chega pelo Worker (acesso direto recebe 403; /api/health fica livre).
+      - key: GP_PROXY_ONLY
+        value: "true"

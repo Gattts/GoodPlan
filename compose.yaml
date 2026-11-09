@@ -1,0 +1,23 @@
+# Postgres local na mesma versão do Supabase (17), para desenvolver e testar como em produção:
+#   docker compose up -d
+#   GP_TEST_DATABASE_URL=postgresql://goodplan:goodplan-local@127.0.0.1:5433/goodplan uv run pytest
+# A porta 5433 evita conflito com o Postgres do MoneyLens (5432). A senha vale só para esta máquina:
+# a porta fica presa ao 127.0.0.1, fora da rede.
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: goodplan
+      POSTGRES_USER: goodplan
+      POSTGRES_PASSWORD: goodplan-local
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U goodplan -d goodplan"]
+      interval: 5s
+      retries: 10
+
+volumes:
+  pgdata:
