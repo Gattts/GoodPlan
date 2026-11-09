@@ -1,0 +1,4 @@
+# Copie para .dev.vars (fora do git) para testar o Worker localmente com `npm run cf:dev`.
+# Use os mesmos valores de GP_PROXY_SECRET e GP_JOBS_TOKEN do backend local (pelo menos 32 caracteres).
+PROXY_SECRET=
+JOBS_TOKEN=

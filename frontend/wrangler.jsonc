@@ -1,0 +1,29 @@
+// Publicação no Cloudflare (Worker com arquivos estáticos). Passo a passo no README, seção "Deploy".
+{
+  "name": "goodplan",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    // Caminho desconhecido devolve o index.html (o app é uma tela só).
+    "not_found_handling": "single-page-application",
+    // Só /api passa pelo Worker; o resto é servido direto, com os cabeçalhos de public/_headers.
+    "run_worker_first": ["/api/*"],
+  },
+  "vars": {
+    // Endereço público da API no Render. TROQUE pelo endereço que o Render mostrar depois do primeiro deploy.
+    // Os segredos ficam fora do arquivo: npx wrangler secret put PROXY_SECRET e npx wrangler secret put JOBS_TOKEN
+    "BACKEND_ORIGIN": "https://goodplan-api.onrender.com",
+  },
+  "kv_namespaces": [
+    // TROQUE o id pelo que `npx wrangler kv namespace create RATES` mostrar.
+    { "binding": "RATES", "id": "00000000000000000000000000000000" },
+  ],
+  // Rotinas duas vezes por dia (12h e 20h UTC): câmbio sempre, aeroportos quando estiverem na hora.
+  "triggers": { "crons": ["0 12,20 * * *"] },
+  "observability": { "enabled": true },
+  // Endereço do app. O domínio está na mesma conta do Cloudflare, que cria o DNS e o certificado sozinho.
+  "routes": [{ "pattern": "goodplan.jpaulos.dev", "custom_domain": true }],
+  "workers_dev": false,
+}
